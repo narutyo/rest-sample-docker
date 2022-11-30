@@ -30,7 +30,7 @@ services:
       TERM: linux
       LANG: "C.UTF-8"
       MYSQL_ROOT_PASSWORD: laravel
-      MYSQL_DATABASE: auth_sample
+      MYSQL_DATABASE: rest_sample
       LOG_ROTATION_DAY: 7
   rest-sample-api:
     build:
@@ -50,10 +50,13 @@ services:
       APP_KEY: "base64:qcPfU/VDf6uuipgg/y1cI8dwGEM9BUYFoFU3qrpLEeE="
       APP_DEBUG: "true"
       APP_URL: http://localhost:5080
+      FRONTEND_URL: http://localhost:5081
+      ACCESS_CONTROL_ALLOW_ORIGIN: "['http://localhost:5081']"
+      HELP_MAIL_ADDRESS: info@localhost
       DB_CONNECTION: mysql
-      DB_HOST: rest-sample-api-mysql
+      DB_HOST: rest-sample-mysql
       DB_PORT: 3306
-      DB_DATABASE: auth_api_sample
+      DB_DATABASE: rest_sample
       DB_USERNAME: root
       DB_PASSWORD: laravel
       MAIL_MAILER: smtp
@@ -71,14 +74,14 @@ services:
     networks:
       - rest-sample
     ports:
-      - "5082:3000"
+      - "5081:3000"
     volumes:
       - ./submodules/rest-sample-frontend:/app
     environment:
       HOST: ${HOST:-localhost}
-      TITLE: "Ex-survey Admin"
-      HOME_URL: ${FRONTEND_URL:-http://localhost:5082}
-      API_URL: ${API_PRIVATE_URL:-http://ex-survey-api:80}
+      TITLE: "Custom URL Scheme Sample"
+      HOME_URL: ${FRONTEND_URL:-http://localhost:5081}
+      API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80}
       API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080}
     command: npm run dev
   rest-sample-mailhog:

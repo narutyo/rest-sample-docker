@@ -1,0 +1,91 @@
+version: "3.3"
+networks:
+  rest-sample:
+    driver: bridge
+volumes:
+  rest-sample-mysql-volume:
+    driver: local
+services:
+  rest-sample-mysql:
+    container_name: rest-sample-mysql
+    build:
+      context: ./docker/mysql
+    networks:
+      - rest-sample
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    logging:
+      driver: json-file
+      options:
+        max-size: "100m"
+        max-file: "2"
+    restart: "no"
+    ports:
+      - 53306:3306
+    volumes:
+      - rest-sample-mysql-volume:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --default-authentication-plugin=mysql_native_password
+    environment:
+      TERM: linux
+      LANG: "C.UTF-8"
+      MYSQL_ROOT_PASSWORD: laravel
+      MYSQL_DATABASE: auth_sample
+      LOG_ROTATION_DAY: 7
+  rest-sample-api:
+    build:
+      context: ./docker/rest-sample-api
+    container_name: rest-sample-api
+    depends_on:
+      - rest-sample-mysql
+    networks:
+      - rest-sample
+    ports:
+      - "5080:80"
+    volumes:
+      - ./submodules/rest-sample-api:/var/www/rest-sample-api
+    environment:
+      APP_NAME: "rest-sample-api"
+      APP_ENV: local
+      APP_KEY: "base64:qcPfU/VDf6uuipgg/y1cI8dwGEM9BUYFoFU3qrpLEeE="
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:5080
+      DB_CONNECTION: mysql
+      DB_HOST: rest-sample-api-mysql
+      DB_PORT: 3306
+      DB_DATABASE: auth_api_sample
+      DB_USERNAME: root
+      DB_PASSWORD: laravel
+      MAIL_MAILER: smtp
+      MAIL_HOST: rest-sample-mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: null
+      MAIL_PASSWORD: null
+      MAIL_ENCRYPTION: 'false'
+      MAIL_FROM_ADDRESS: "api@rest-sample"
+      MAIL_FROM_NAME: "rest-sample-api"
+  rest-sample-frontend:
+    build:
+      context: ./docker/rest-sample-frontend
+    container_name: rest-sample-frontend
+    networks:
+      - rest-sample
+    ports:
+      - "5082:3000"
+    volumes:
+      - ./submodules/rest-sample-frontend:/app
+    environment:
+      HOST: ${HOST:-localhost}
+      TITLE: "Ex-survey Admin"
+      HOME_URL: ${FRONTEND_URL:-http://localhost:5082}
+      API_URL: ${API_PRIVATE_URL:-http://ex-survey-api:80}
+      API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080}
+    command: npm run dev
+  rest-sample-mailhog:
+    image: mailhog/mailhog
+    container_name: rest-sample-mailhog
+    ports:
+      - 51025:1025
+      - 58025:8025
+    networks:
+      - rest-sample

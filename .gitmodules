@@ -1,0 +1,6 @@
+[submodule "submodules/rest-sample-frontend"]
+	path = submodules/rest-sample-frontend
+	url = git@github.com:narutyo/rest-sample-frontend.git
+[submodule "submodules/rest-sample-api"]
+	path = submodules/rest-sample-api
+	url = git@github.com:narutyo/rest-sample-api.git

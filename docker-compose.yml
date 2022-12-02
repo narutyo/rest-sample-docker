@@ -81,8 +81,9 @@ services:
       HOST: ${HOST:-localhost}
       TITLE: "Custom URL Scheme Sample"
       HOME_URL: ${FRONTEND_URL:-http://localhost:5081}
-      API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80}
-      API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080}
+      API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80/api}
+      API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080/api}
+      ACCESS_KEY_ID: "rest-sample-dummy"
     command: npm run dev
   rest-sample-mailhog:
     image: mailhog/mailhog

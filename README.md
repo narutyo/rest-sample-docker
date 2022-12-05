@@ -20,3 +20,12 @@ $ docker-compose exec rest-sample-api php artisan migrate --seed
 $ cd docker
 $ docker-compose up -d
 ```
+
+## クライアント発行
+```
+# パスワード認証用クライアント発行（フロントエンド用）
+$ docker-compose exec rest-sample-api php artisan passport:client --password
+
+# PKCE認証用クライアント発行（client_secretなし）
+$ php artisan passport:client --public
+```

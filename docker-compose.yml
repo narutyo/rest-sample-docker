@@ -29,8 +29,8 @@ services:
     environment:
       TERM: linux
       LANG: "C.UTF-8"
-      MYSQL_ROOT_PASSWORD: laravel
-      MYSQL_DATABASE: rest_sample
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-laravel}
+      MYSQL_DATABASE: ${DB_NAME:-rest_sample}
       LOG_ROTATION_DAY: 7
   rest-sample-api:
     build:
@@ -50,16 +50,16 @@ services:
       APP_ENV: local
       APP_KEY: "base64:qcPfU/VDf6uuipgg/y1cI8dwGEM9BUYFoFU3qrpLEeE="
       APP_DEBUG: "true"
-      APP_URL: http://localhost:5080
-      FRONTEND_URL: http://localhost:5081
-      ACCESS_CONTROL_ALLOW_ORIGIN: "['http://localhost:5081']"
+      APP_URL: ${API_PUBLIC_URL:-http://rest-sample-api:80/api}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5081}
+      ACCESS_CONTROL_ALLOW_ORIGIN: ${FRONTEND_URL:-http://localhost:5081}
       HELP_MAIL_ADDRESS: info@localhost
       DB_CONNECTION: mysql
       DB_HOST: rest-sample-mysql
       DB_PORT: 3306
-      DB_DATABASE: rest_sample
+      DB_DATABASE: ${DB_NAME:-rest_sample}
       DB_USERNAME: root
-      DB_PASSWORD: laravel
+      DB_PASSWORD: ${DB_PASS:-laravel}
       MAIL_MAILER: smtp
       MAIL_HOST: rest-sample-mailhog
       MAIL_PORT: 1025
@@ -85,8 +85,8 @@ services:
       API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80/api}
       API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080/api}
       ACCESS_KEY_ID: "rest-sample-dummy"
-      CLIENT_ID: "97e276ab-8fd5-4d4d-a58c-a214d1b8b7ed"
-      CLIENT_SECRET: "WbtmuCuySQkiiLtH06FrWXpdOAlgJBFuH7stWObU"
+      CLIENT_ID: ${CLIENT_ID}
+      CLIENT_SECRET: ${CLIENT_SECRET}
     command: npm run dev
   rest-sample-mailhog:
     image: mailhog/mailhog

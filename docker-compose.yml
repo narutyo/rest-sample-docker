@@ -42,6 +42,7 @@ services:
       - rest-sample
     ports:
       - "5080:80"
+      - "55173:55173"
     volumes:
       - ./submodules/rest-sample-api:/var/www/rest-sample-api
     environment:
@@ -84,6 +85,8 @@ services:
       API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80/api}
       API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080/api}
       ACCESS_KEY_ID: "rest-sample-dummy"
+      CLIENT_ID: "97e276ab-8fd5-4d4d-a58c-a214d1b8b7ed"
+      CLIENT_SECRET: "WbtmuCuySQkiiLtH06FrWXpdOAlgJBFuH7stWObU"
     command: npm run dev
   rest-sample-mailhog:
     image: mailhog/mailhog

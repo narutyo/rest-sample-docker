@@ -9,7 +9,6 @@ $ cd submodules/rest-sample-frontend && npm install && cd ../../
 $ docker-compose up -d --build
 
 # コンテナが立ち上がってから...
-$ docker-compose exec rest-sample-api composer self-update
 $ docker-compose exec rest-sample-api composer config -g repos.packagist composer https://packagist.jp
 $ docker-compose exec rest-sample-api composer install
 $ sudo find submodules/rest-sample-api/storage -type d -exec chmod 777 {} +
@@ -21,8 +20,11 @@ $ cd docker
 $ docker-compose up -d
 ```
 
-## クライアント発行
+## Laravel Passport設定
 ```
+# keyの発行
+php artisan passport:keys
+
 # パスワード認証用クライアント発行（フロントエンド用）
 $ docker-compose exec rest-sample-api php artisan passport:client --password
 

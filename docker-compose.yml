@@ -60,14 +60,19 @@ services:
       DB_DATABASE: ${DB_NAME:-rest_sample}
       DB_USERNAME: root
       DB_PASSWORD: ${DB_PASS:-laravel}
-      MAIL_MAILER: smtp
-      MAIL_HOST: rest-sample-mailhog
-      MAIL_PORT: 1025
-      MAIL_USERNAME: null
-      MAIL_PASSWORD: null
-      MAIL_ENCRYPTION: 'false'
+      MAIL_MAILER: ${MAIL_MAILER}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
       MAIL_FROM_ADDRESS: "api@rest-sample"
       MAIL_FROM_NAME: "rest-sample-api"
+      BROADCAST_DRIVER: "pusher"
+      PUSHER_APP_ID: ${PUSHER_APP_ID}
+      PUSHER_APP_KEY: ${PUSHER_APP_KEY}
+      PUSHER_APP_SECRET: ${PUSHER_APP_SECRET}
+      PUSHER_APP_CLUSTER: ${PUSHER_APP_CLUSTER}
   rest-sample-frontend:
     build:
       context: ./docker/rest-sample-frontend
@@ -85,14 +90,7 @@ services:
       API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80/api}
       API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080/api}
       ACCESS_KEY_ID: "rest-sample-dummy"
+      SENTRY_DSN: ${SENTRY_DSN}
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
     command: npm run dev
-  rest-sample-mailhog:
-    image: mailhog/mailhog
-    container_name: rest-sample-mailhog
-    ports:
-      - 51025:1025
-      - 58025:8025
-    networks:
-      - rest-sample

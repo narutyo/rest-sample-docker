@@ -89,7 +89,7 @@ services:
       HOME_URL: ${FRONTEND_URL:-http://localhost:5081}
       API_URL: ${API_PRIVATE_URL:-http://rest-sample-api:80/api}
       API_URL_BROWSER: ${API_PUBLIC_URL:-http://localhost:5080/api}
-      ACCESS_KEY_ID: "rest-sample-dummy"
+      ACCESS_KEY_ID: ${ACCESS_KEY_ID}
       SENTRY_DSN: ${SENTRY_DSN}
       CLIENT_ID: ${CLIENT_ID}
       CLIENT_SECRET: ${CLIENT_SECRET}
